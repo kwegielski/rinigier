@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if form.vars.value.id is defined %}Edit user{% else %}Add user{% endif %}
+{% endblock %}
+
+{% block body %}
+<h2 class="text-xl font-bold mb-4">
+    {% if form.vars.value.id is defined %}Edit user{% else %}Add user{% endif %}
+</h2>
+
+<div class="bg-white p-6 rounded shadow max-w-lg">
+    {{ form_start(form) }}
+    <div class="grid grid-cols-1 gap-4">
+        <div>
+            {{ form_label(form.first_name, 'First name:', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(form.first_name, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(form.first_name) }}
+        </div>
+        <div>
+            {{ form_label(form.last_name, 'Last name:', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(form.last_name, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(form.last_name) }}
+        </div>
+        <div>
+            {{ form_label(form.gender, 'Gender', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(form.gender, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(form.gender) }}
+        </div>
+        <div>
+            {{ form_label(form.birthdate, 'Birthdate:', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(form.birthdate, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(form.birthdate) }}
+        </div>
+    </div>
+    
+    <div class="mt-4 flex space-x-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            {% if form.vars.value.id is defined %}Save user{% else %}Add user{% endif %}
+        </button>
+        <a href="{{ path('user_index') }}" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Back to list</a>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

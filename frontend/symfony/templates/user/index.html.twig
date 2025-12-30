@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users list{% endblock %}
+
+{% block body %}
+<h1 class="text-2xl font-bold mb-4">Users list</h1>
+<div class="flex justify-between items-center mb-4">
+    <a href="{{ path('user_new') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">➕ Add user</a>
+    <form action="{{ path('user_import') }}" method="post" class="inline">
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            ⬇️ User import
+        </button>
+    </form>
+</div>
+{% include 'user/filter_form.html.twig' with {'filter_form': filter_form} %}
+<table class="min-w-full bg-white rounded shadow overflow-hidden">
+    <thead class="bg-gray-200">
+        <tr>
+            {% for column in ['first_name', 'last_name', 'gender', 'birthdate'] %}
+                {% if sort_column == column %}
+                    {% set new_direction = sort_direction == 'asc' ? 'desc' : 'asc' %}
+                {% else %}
+                    {% set new_direction = 'asc' %}
+                {% endif %}
+
+                {% set query_string = '' %}
+                {% for key, value in app.request.query.all %}
+                    {% if key not in ['sort_column','sort_direction','page'] %}
+                        {% if value is iterable %}
+                            {% for sub_key, sub_value in value %}
+                                {% set query_string = query_string ~ '&' ~ key ~ '[' ~ sub_key ~ ']=' ~ sub_value %}
+                            {% endfor %}
+                        {% else %}
+                            {% set query_string = query_string ~ '&' ~ key ~ '=' ~ value %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                <th class="px-4 py-2 text-left">
+                    <a href="?sort_column={{ column }}&sort_direction={{ new_direction }}{{ query_string }}">
+                        {{ column|capitalize }}
+                        {% if sort_column == column %}
+                            {% if sort_direction == 'asc' %}↑{% else %}↓{% endif %}
+                        {% endif %}
+                    </a>
+                </th>
+            {% endfor %}
+            <th class="px-4 py-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr class="border-t">
+                <td class="px-4 py-2">{{ user.first_name }}</td>
+                <td class="px-4 py-2">{{ user.last_name }}</td>
+                <td class="px-4 py-2">{{ user.gender }}</td>
+                <td class="px-4 py-2">{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
+                <td class="px-4 py-2">
+                    <a class="text-blue-500 hover:underline" href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
+                    <form method="post" action="{{ path('user_delete', {'id': user.id}) }}" style="display:inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button type="submit" onclick="return confirm('Are You sure You want to delete this user?');" class="text-red-500 hover:underline">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="px-4 py-2 text-center text-gray-500">No results found</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="flex justify-between mt-">
+    {% set query_string = '' %}
+    {% for key, value in app.request.query.all %}
+        {% if key != 'page' %}
+            {% if value is iterable %}
+                {% for sub_key, sub_value in value %}
+                    {% set query_string = query_string ~ '&' ~ key ~ '[' ~ sub_key ~ ']=' ~ sub_value %}
+                {% endfor %}
+            {% else %}
+                {% set query_string = query_string ~ '&' ~ key ~ '=' ~ value %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if current_page > 1 %}
+        <a href="?page={{ current_page - 1 }}{{ query_string }}" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">&laquo Prev</a>
+    {% else %}
+        <span></span>
+    {% endif %}
+
+    {% if users|length > 0 %}
+        <a href="?page={{ current_page + 1 }}{{ query_string }}" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Next &raquo;</a>
+    {% else %}
+        <span></span>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+# Docker
+*.env.local
+
+# Symfony
+/frontend/symfony/vendor/
+/frontend/symfony/var/
+/frontend/symfony/node_modules/
+
+# Phoenix / Elixir
+/backend/phoenix/_build/
+/backend/phoenix/deps/
+/backend/phoenix/cover/

@@ -1,0 +1,35 @@
+<div class="bg-white p-4 rounded shadow mb-4">
+    {{ form_start(filter_form, {'method': 'get', attr: { class: 'space-y-4' }}) }}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            {{ form_label(filter_form.first_name, 'First name: ', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(filter_form.first_name, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(filter_form.first_name) }}
+        </div>
+        <div>
+            {{ form_label(filter_form.last_name, 'Last name:', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(filter_form.last_name, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(filter_form.last_name) }}
+        </div>
+        <div>
+            {{ form_label(filter_form.gender, 'Gender', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(filter_form.gender, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(filter_form.gender) }}
+        </div>
+        <div>
+            {{ form_label(filter_form.birthdate_from, 'Birthdate from:', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(filter_form.birthdate_from, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(filter_form.birthdate_from) }}
+        </div>
+        <div>
+            {{ form_label(filter_form.birthdate_to, 'Birthdate to:', { label_attr: { class: 'block font-medium mb-1' } }) }}
+            {{ form_widget(filter_form.birthdate_to, { attr: { class: 'border rounded px-2 py-1 w-full' } }) }}
+            {{ form_errors(filter_form.birthdate_to) }}
+        </div>
+    </div>
+    <div class="mt-4 flex space-x-2">
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Filter</button>
+        <a href="{{ path('user_index') }}" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Clear</a>
+    </div>
+    {{ form_end(filter_form) }}
+</div>

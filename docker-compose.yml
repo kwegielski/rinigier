@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_DB: phoenix_dev
+      POSTGRES_USER: phoenix
+      POSTGRES_PASSWORD: phoenix
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  phoenix:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: phoenix
+    working_dir: /app
+    volumes:
+      - ./backend/phoenix:/app
+    environment:
+      DATABASE_URL: ecto://phoenix:phoenix@postgres/phoenix_dev
+      SECRET_KEY_BASE: supersecretkey
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+
+  symfony:
+    build: 
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: symfony
+    working_dir: /var/www/html
+    volumes:
+      - ./frontend/symfony:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - phoenix
+
+volumes:
+  pgdata:
