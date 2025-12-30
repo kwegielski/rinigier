@@ -43,7 +43,7 @@ Nie jest wymagane lokalne PHP, Elixir ani Node – wszystko działa w Dockerze.
 ### 1 Klonowanie repozytorium
 
 ```bash
-git clone git@github.com:kwegielski/rinigier.git
+git clone https://github.com/kwegielski/rinigier.git
 cd rinigier
 ```
 
