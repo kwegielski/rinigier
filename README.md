@@ -61,12 +61,18 @@ Uruchomione zostaną:
 
 ### 3 Backend – Phoenix (API)
 
-Migracje bazy danych
 
+Instalacja zależności:
 ```bash
-docker compose exec phoenix mix ecto.setup
-docker compose exec phoenix mix ecto.migrate
-docker compose exec phoenix mix phx.server
+docker compose exec phoenix sh
+mix deps.get
+mix deps.compile
+```
+Migracje bazy danych
+```bash
+mix ecto.setup
+mix ecto.migrate
+mix phx.server
 ```
 Co robi import:
 - pobiera listy imion i nazwisk (100 dla każdej płci)
@@ -95,7 +101,12 @@ Obsługiwane funkcje:
 Panel administracyjny dostępny pod:
 
 ```bash
-http://localhost:8080
+http://127.0.0.1:8000/users
+```
+Instalacja zależności:
+```bash
+docker compose exec symfony bash
+composer instal
 ```
 
 Funkcjonalności:
